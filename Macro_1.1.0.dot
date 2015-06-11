@@ -1,0 +1,58 @@
+'Main Macro
+Sub Search()
+'
+' Search Macro
+'
+'
+    ' Abstract
+    FindTxt ("Abstract")
+    Selection.Paragraphs(1).Range.Select
+    If Selection.Type = wdSelectionNormal Then
+    Selection.Copy
+    Selection.Paste
+    Selection.InsertBreak Type:=wdPageBreak
+    End If
+    
+    ' Introduction
+    FindTxt ("Introduction")
+    Selection.MoveDown
+    Selection.Paragraphs(1).Range.Select
+    If Selection.Type = wdSelectionNormal Then
+    Selection.Copy
+    Selection.Paste
+    Selection.InsertBreak Type:=wdPageBreak
+    End If
+    
+End Sub
+'Module to change the attributes of the heading
+Sub Modify()
+    Selection.Font.Name = "Times New Roman"
+    Selection.Font.Size = 26
+    Selection.Font.Bold = True
+    Selection.ParagraphFormat.Alignment = wdAlignParagraphCenter
+End Sub
+'Module to find the respective headings
+Sub FindTxt(textInp As String)
+    Selection.Find.ClearFormatting
+    With Selection.Find
+        .text = textInp
+        .Forward = True
+        .Wrap = wdFindContinue
+        .Format = False
+        .MatchCase = False
+        .MatchWholeWord = True
+    End With
+    Selection.Find.Execute
+    'Modify
+End Sub
+'Module to find the paragraph
+Sub FindPar(parInp As String)
+     Selection.Find.ClearFormatting
+     With Selection.Find
+        .text = parInp
+        .Forward = True
+    End With
+    Selection.Find.Execute
+    'Justify the Paragraph
+    Selection.Paragraphs.Alignment = wdAlignParagraphJustify
+End Sub
