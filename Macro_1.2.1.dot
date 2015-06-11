@@ -1,0 +1,115 @@
+Public ThisDoc As String
+
+
+Public NextDoc As String
+
+
+'Main Macro
+Sub Search()
+'
+' Search Macro
+'
+'
+    'Initialize Strings
+    ThisDoc = "report"
+    NextDoc = "Document1"
+   
+    Documents.Add Template:="Normal", NewTemplate:=False, DocumentType:=0
+    Windows(ThisDoc).Activate
+    Windows(ThisDoc).Activate
+    
+    
+    ' Abstract
+    Selection.HomeKey Unit:=wdStory
+    FindTxt ("Abstract")
+    keyCopy
+    
+    
+    ' Introduction
+    
+    FindTxt ("Introduction")
+    keyCopy
+    
+    
+    'Introduction Contents
+    FindTxt ("Introduction")
+    FnCopy
+    
+    
+    
+    ' Acknowledgement
+    FindTxt ("ACKNOWLEDGMENT")
+    keyCopy
+    
+    'Acknowledgement Contents
+    FindTxt ("ACKNOWLEDGMENT")
+    FnCopy
+    
+    
+   ' References
+    FindTxt ("REFERENCES")
+    keyCopy
+    
+    
+    'References Contents
+    FindTxt ("REFERENCES")
+    FnCopy
+    
+    Windows(NextDoc).Activate
+    Selection.WholeStory
+    If ActiveWindow.View.SplitSpecial <> wdPaneNone Then
+        ActiveWindow.Panes(2).Close
+    End If
+    If ActiveWindow.ActivePane.View.Type <> wdPrintView Then
+        ActiveWindow.ActivePane.View.Type = wdPrintView
+    End If
+    With Selection.PageSetup.TextColumns
+        .SetCount NumColumns:=2
+        .EvenlySpaced = True
+        .LineBetween = False
+    End With
+    Selection.HomeKey Unit:=wdStory
+    Windows(ThisDoc).Activate
+    Selection.HomeKey Unit:=wdStory
+    
+
+    
+End Sub
+
+'Module to find the respective headings
+Sub FindTxt(textInp As String)
+    Selection.Find.ClearFormatting
+    With Selection.Find
+        .text = textInp
+        .Format = False
+        .MatchCase = False
+        .MatchWholeWord = True
+    End With
+    Selection.Find.Execute
+End Sub
+
+Function keyCopy()
+    Selection.Paragraphs(1).Range.Select
+    If Selection.Type = wdSelectionNormal Then
+    Selection.Copy
+    End If
+    Windows(NextDoc).Activate
+    Selection.PasteAndFormat (wdFormatOriginalFormatting)
+    Windows(ThisDoc).Activate
+    Selection.HomeKey Unit:=wdStory
+
+End Function
+
+Function FnCopy()
+    FindTxt ("Introduction")
+    Selection.MoveDown
+    Selection.Paragraphs(1).Range.Select
+    If Selection.Type = wdSelectionNormal Then
+    Selection.Copy
+    End If
+    Windows(NextDoc).Activate
+    Selection.TypeParagraph
+    Selection.PasteAndFormat (wdFormatOriginalFormatting)
+    Windows(ThisDoc).Activate
+    Selection.HomeKey Unit:=wdStory
+End Function
