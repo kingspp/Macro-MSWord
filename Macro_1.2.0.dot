@@ -1,0 +1,145 @@
+'Main Macro
+Sub Search()
+'
+' Search Macro
+'
+'
+    
+    
+    'FnWriteToWordDoc
+    'FnOpeneWordDoc
+
+    'newDoc
+    'ShowFilename
+     Documents.Add Template:="Normal", NewTemplate:=False, DocumentType:=0
+     Windows("report").Activate
+    
+    
+    ' Abstract
+    FindTxt ("Abstract")
+    Selection.Paragraphs(1).Range.Select
+    If Selection.Type = wdSelectionNormal Then
+    Selection.Copy
+    End If
+    Windows("Document3").Activate
+    Selection.PasteAndFormat (wdFormatOriginalFormatting)
+    Windows("report").Activate
+    
+    ' Introduction
+    FindTxt ("Introduction")
+    Selection.MoveDown
+    Selection.Paragraphs(1).Range.Select
+    If Selection.Type = wdSelectionNormal Then
+    Selection.Copy
+    Selection.Paste
+    Selection.InsertBreak Type:=wdPageBreak
+    End If
+    
+    ' ACKNOWLEDGMENT
+    FindTxt ("ACKNOWLEDGMENT")
+    Selection.MoveDown
+    Selection.Paragraphs(1).Range.Select
+    If Selection.Type = wdSelectionNormal Then
+    Selection.Copy
+    Selection.Paste
+    Selection.InsertBreak Type:=wdPageBreak
+    End If
+    
+    
+    ' REFERENCES
+    FindTxt ("REFERENCES")
+    Selection.MoveDown
+    Selection.Paragraphs(1).Range.Select
+    If Selection.Type = wdSelectionNormal Then
+    Selection.Copy
+    Selection.Paste
+    Selection.InsertBreak Type:=wdPageBreak
+    End If
+    
+
+    
+End Sub
+
+'Module to find the respective headings
+Sub FindTxt(textInp As String)
+    Selection.Find.ClearFormatting
+    With Selection.Find
+        .text = textInp
+        .Forward = True
+        .Wrap = wdFindContinue
+        .Format = False
+        .MatchCase = False
+        .MatchWholeWord = True
+    End With
+    Selection.Find.Execute
+    Selection.Copy
+    
+    'Modify
+End Sub
+'Module to find the paragraph
+Sub FindPar(parInp As String)
+     Selection.Find.ClearFormatting
+     With Selection.Find
+        .text = parInp
+        .Forward = True
+    End With
+    Selection.Find.Execute
+    'Justify the Paragraph
+    Selection.Paragraphs.Alignment = wdAlignParagraphJustify
+End Sub
+
+Function FnOpeneWordDoc()
+   Dim objWord
+   Dim objDoc
+   Set objWord = CreateObject("Word.Application")
+   Set objDoc = objWord.Documents.Open("D:\temp.docx")
+   objWord.Visible = True
+End Function
+
+Function FnWriteToWordDoc()
+   Dim objWord
+   Dim objDoc
+   Dim objSelection
+   Set objWord = CreateObject("Word.Application")
+   Set objDoc = objWord.Documents.Add
+   objWord.Visible = True
+   objDoc.SaveAs ("D:\temp.docx")
+   objDoc.Close
+ 
+End Function
+
+Function newDoc()
+   
+    
+     
+End Function
+
+
+Sub ShowFilename()
+Dim pathName As String
+Dim o As Document
+Set o = ActiveDocument
+If InStrRev(o.Name, ".") <> 0 Then
+    MsgBox Left(o.Name, InStrRev(o.Name, ".") - 1)
+Else
+    MsgBox o.Name
+End If
+ Documents.Add Template:="Normal", NewTemplate:=False, DocumentType:=0
+ Windows(o.Name).Activate
+End Sub
+
+Sub Macro1()
+'
+' Macro1 Macro
+'
+'
+    Documents.Add Template:="Normal", NewTemplate:=False, DocumentType:=0
+    Windows("report").Activate
+    Selection.MoveDown Unit:=wdLine, Count:=3, Extend:=wdExtend
+    Selection.EndKey Unit:=wdLine, Extend:=wdExtend
+    Selection.Copy
+    Windows("Document2").Activate
+    Windows("report").Activate
+    Selection.PasteAndFormat (wdFormatOriginalFormatting)
+    Selection.MoveDown Unit:=wdLine, Count:=1
+End Sub
