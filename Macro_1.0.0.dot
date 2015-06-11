@@ -1,0 +1,49 @@
+'Main Macro
+Sub Search()
+'
+' Search Macro
+'
+'
+    'Get the number of paragraph
+    iParCount = ActiveDocument.Paragraphs.Count
+    'Loop to Find the paragraphs in the document
+    Do While iParCount
+        FindPar ("^p")
+        iParCount = iParCount - 1
+    Loop
+    'Find text
+    FindTxt ("Introduction")
+    FindTxt ("Abstract")
+End Sub
+'Module to change the attributes of the heading
+Sub Modify()
+    Selection.Font.Name = "Times New Roman"
+    Selection.Font.Size = 26
+    Selection.Font.Bold = True
+    Selection.ParagraphFormat.Alignment = wdAlignParagraphCenter
+End Sub
+'Module to find the respective headings
+Sub FindTxt(textInp As String)
+    Selection.Find.ClearFormatting
+    With Selection.Find
+        .text = textInp
+        .Forward = True
+        .Wrap = wdFindContinue
+        .Format = False
+        .MatchCase = False
+        .MatchWholeWord = True
+    End With
+    Selection.Find.Execute
+    Modify
+End Sub
+'Module to find the paragraph
+Sub FindPar(parInp As String)
+     Selection.Find.ClearFormatting
+     With Selection.Find
+        .text = parInp
+        .Forward = True
+    End With
+    Selection.Find.Execute
+    'Justify the Paragraph
+    Selection.Paragraphs.Alignment = wdAlignParagraphJustify
+End Sub
