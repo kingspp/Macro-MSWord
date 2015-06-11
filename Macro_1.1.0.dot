@@ -1,136 +1,48 @@
-Public ThisDoc As String
-
-
-Public NextDoc As String
-
-
 'Main Macro
 Sub Search()
 '
 ' Search Macro
 '
 '
-    
-    ThisDoc = "report"
-    NextDoc = "Document1"
-    'FnWriteToWordDoc
-    'FnOpeneWordDoc
-
-    'newDoc
-    'ShowFilename
-     Documents.Add Template:="Normal", NewTemplate:=False, DocumentType:=0
-     Windows(ThisDoc).Activate
-     Windows(ThisDoc).Activate
-    
-    
     ' Abstract
-    Selection.HomeKey Unit:=wdStory
     FindTxt ("Abstract")
     Selection.Paragraphs(1).Range.Select
     If Selection.Type = wdSelectionNormal Then
     Selection.Copy
+    Selection.Paste
+    Selection.InsertBreak Type:=wdPageBreak
     End If
-    Windows(NextDoc).Activate
-    Selection.PasteAndFormat (wdFormatOriginalFormatting)
-    Windows(ThisDoc).Activate
     
     ' Introduction
-    Selection.HomeKey Unit:=wdStory
-    FindTxt ("Introduction")
-    Selection.Copy
-    Windows(NextDoc).Activate
-    Selection.PasteAndFormat (wdFormatOriginalFormatting)
-    Selection.TypeParagraph
-    Windows(ThisDoc).Activate
-    Selection.HomeKey Unit:=wdStory
-    
-    'Introduction Contents
     FindTxt ("Introduction")
     Selection.MoveDown
     Selection.Paragraphs(1).Range.Select
     If Selection.Type = wdSelectionNormal Then
     Selection.Copy
+    Selection.Paste
+    Selection.InsertBreak Type:=wdPageBreak
     End If
-    Windows(NextDoc).Activate
-    Selection.PasteAndFormat (wdFormatOriginalFormatting)
-    Windows(ThisDoc).Activate
-    
-    ' ACKNOWLEDGMENT
-    Selection.HomeKey Unit:=wdStory
-    FindTxt ("ACKNOWLEDGMENT")
-    Selection.Copy
-    Windows(NextDoc).Activate
-    Selection.PasteAndFormat (wdFormatOriginalFormatting)
-    Selection.TypeParagraph
-    Windows(ThisDoc).Activate
-    Selection.HomeKey Unit:=wdStory
-    
-    'ACKNOWLEDGMENT Contents
-    FindTxt ("ACKNOWLEDGMENT")
-    Selection.MoveDown
-    Selection.Paragraphs(1).Range.Select
-    If Selection.Type = wdSelectionNormal Then
-    Selection.Copy
-    End If
-    Windows(NextDoc).Activate
-    Selection.PasteAndFormat (wdFormatOriginalFormatting)
-    Windows(ThisDoc).Activate
-    
-    
-   ' REFERENCES
-    Selection.HomeKey Unit:=wdStory
-    FindTxt ("REFERENCES")
-    Selection.Copy
-    Windows(NextDoc).Activate
-    Selection.PasteAndFormat (wdFormatOriginalFormatting)
-    Selection.TypeParagraph
-    Windows(ThisDoc).Activate
-    Selection.HomeKey Unit:=wdStory
-    
-    'REFERENCES Contents
-    FindTxt ("REFERENCES")
-    Selection.MoveDown
-    Selection.Paragraphs(1).Range.Select
-    If Selection.Type = wdSelectionNormal Then
-    Selection.Copy
-    End If
-    Windows(NextDoc).Activate
-    Selection.PasteAndFormat (wdFormatOriginalFormatting)
-    
-    
-    
-    Selection.WholeStory
-    If ActiveWindow.View.SplitSpecial <> wdPaneNone Then
-        ActiveWindow.Panes(2).Close
-    End If
-    If ActiveWindow.ActivePane.View.Type <> wdPrintView Then
-        ActiveWindow.ActivePane.View.Type = wdPrintView
-    End If
-    With Selection.PageSetup.TextColumns
-        .SetCount NumColumns:=2
-        .EvenlySpaced = True
-        .LineBetween = False
-    End With
-    Selection.HomeKey Unit:=wdStory
-    Windows(ThisDoc).Activate
-    Selection.HomeKey Unit:=wdStory
-    
-
     
 End Sub
-
+'Module to change the attributes of the heading
+Sub Modify()
+    Selection.Font.Name = "Times New Roman"
+    Selection.Font.Size = 26
+    Selection.Font.Bold = True
+    Selection.ParagraphFormat.Alignment = wdAlignParagraphCenter
+End Sub
 'Module to find the respective headings
 Sub FindTxt(textInp As String)
     Selection.Find.ClearFormatting
     With Selection.Find
         .text = textInp
+        .Forward = True
+        .Wrap = wdFindContinue
         .Format = False
         .MatchCase = False
         .MatchWholeWord = True
     End With
     Selection.Find.Execute
-    
-    
     'Modify
 End Sub
 'Module to find the paragraph
@@ -143,66 +55,4 @@ Sub FindPar(parInp As String)
     Selection.Find.Execute
     'Justify the Paragraph
     Selection.Paragraphs.Alignment = wdAlignParagraphJustify
-End Sub
-
-Function FnOpeneWordDoc()
-   Dim objWord
-   Dim objDoc
-   Set objWord = CreateObject("Word.Application")
-   Set objDoc = objWord.Documents.Open("D:\temp.docx")
-   objWord.Visible = True
-End Function
-
-Function FnWriteToWordDoc()
-   Dim objWord
-   Dim objDoc
-   Dim objSelection
-   Set objWord = CreateObject("Word.Application")
-   Set objDoc = objWord.Documents.Add
-   objWord.Visible = True
-   objDoc.SaveAs ("D:\temp.docx")
-   objDoc.Close
- 
-End Function
-
-Function newDoc()
-   
-    
-     
-End Function
-
-
-Sub ShowFilename()
-Dim pathName As String
-Dim o As Document
-Set o = ActiveDocument
-If InStrRev(o.Name, ".") <> 0 Then
-    MsgBox Left(o.Name, InStrRev(o.Name, ".") - 1)
-Else
-    MsgBox o.Name
-End If
- Documents.Add Template:="Normal", NewTemplate:=False, DocumentType:=0
- Windows(o.Name).Activate
-End Sub
-
-
-Sub Macro1()
-'
-' Macro1 Macro
-'
-'
-    Selection.WholeStory
-    If ActiveWindow.View.SplitSpecial <> wdPaneNone Then
-        ActiveWindow.Panes(2).Close
-    End If
-    If ActiveWindow.ActivePane.View.Type <> wdPrintView Then
-        ActiveWindow.ActivePane.View.Type = wdPrintView
-    End If
-    With Selection.PageSetup.TextColumns
-        .SetCount NumColumns:=2
-        .EvenlySpaced = True
-        .LineBetween = False
-        .Width = InchesToPoints(6.5)
-    End With
-    Selection.MoveDown Unit:=wdLine, Count:=1
 End Sub
