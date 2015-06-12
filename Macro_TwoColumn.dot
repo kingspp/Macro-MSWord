@@ -1,1 +1,15 @@
-
+Selection.WholeStory
+    If ActiveWindow.View.SplitSpecial <> wdPaneNone Then
+        ActiveWindow.Panes(2).Close
+    End If
+    If ActiveWindow.ActivePane.View.Type <> wdPrintView Then
+        ActiveWindow.ActivePane.View.Type = wdPrintView
+    End If
+    With Selection.PageSetup.TextColumns
+        .SetCount NumColumns:=2
+        .EvenlySpaced = True
+        .LineBetween = False
+    End With
+    Selection.HomeKey Unit:=wdStory
+    Windows(ThisDoc).Activate
+    Selection.HomeKey Unit:=wdStory
