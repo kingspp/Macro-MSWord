@@ -1,4 +1,4 @@
-Selection.WholeStory
+    Selection.WholeStory
     If ActiveWindow.View.SplitSpecial <> wdPaneNone Then
         ActiveWindow.Panes(2).Close
     End If
