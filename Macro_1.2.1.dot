@@ -10,8 +10,10 @@ Sub Search()
 ' Search Macro
 '
 '
+    Dim AD As Document
+    Set AD = ActiveDocument
     'Initialize Strings
-    ThisDoc = "report"
+    ThisDoc = AD.Name
     NextDoc = "Document1"
    
     Documents.Add Template:="Normal", NewTemplate:=False, DocumentType:=0
