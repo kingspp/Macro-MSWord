@@ -1,0 +1,22 @@
+Sub DocDetails()
+    'Built - in function to count Paragraphs. Note: It counts empty Paragraphs.
+    iParCount = ActiveDocument.Paragraphs.Count
+
+    'To be more specific
+    'AD = Active Document
+    Dim AD As Document
+    'DP = Document Property
+    Dim DP As Object
+
+    Set AD = ActiveDocument
+    Set DP = AD.BuiltInDocumentProperties
+
+    'Message Box to display various parameters of the Document.
+    MsgBox "File Name: " & AD.Name & vbNewLine & _
+           "File Path: " & AD.Path & vbNewLine & vbNewLine & _
+           "Total no of Paragraphs : " & iParCount & vbNewLine & _
+           "Non-Empty Paragraphs  : " & DP("Number Of Paragraphs") & vbNewLine & _
+           "No of Lines           : " & DP("Number Of Lines") & vbNewLine & _
+           "No of Words           : " & DP("Number Of Words") & vbNewLine & _
+           "No of Letters         : " & ActiveDocument.Range.Characters.Count & vbNewLine
+End Sub
